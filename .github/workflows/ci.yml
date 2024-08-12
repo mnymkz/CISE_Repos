@@ -1,34 +1,30 @@
-name: CI_action
+name: CI
 
-on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+on: [push, pull_request]
 
 jobs:
     build:
         runs-on: ubuntu-latest
 
-        strategy:
-            matrix:
-                node-version: [14.x]
-
-        defaults:
-            run:
-                working-directory: worksheet2/my-react-app
-
         steps:
-            - name: Checkout repository
-              uses: actions/checkout@v2
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-            - name: Set up Node.js ${{ matrix.node-version }}
-              uses: actions/checkout@v2
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "20.14.0"
 
             - name: Install dependencies
               run: npm install
 
-            - name: Run the tests
+            - name: Audit dependencies
+              run: npm audit
+
+            - name: Fix vulnerabilities
+              run: npm audit fix
+
+            - name: Run tests
               run: npm test
 
             - name: Build
