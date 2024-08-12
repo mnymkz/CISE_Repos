@@ -14,6 +14,10 @@ jobs:
             matrix:
                 node-version: [14.x]
 
+        defaults:
+            run:
+                working-directory: worksheet2/my-react-app
+
         steps:
             - name: Checkout repository
               uses: actions/checkout@v2
